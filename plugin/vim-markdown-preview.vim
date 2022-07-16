@@ -88,7 +88,7 @@ function! Vim_Markdown_Preview()
     endif
 
     if g:vmp_osname == 'unix'
-        let chrome_wid = system('wmctrl -l | grep -e "' . b:curr_file_name_no_ext . '" -e "' . g:vim_markdown_preview_browser . '" | cut -d " " -f1')
+        let chrome_wid = system('wmctrl -l | grep "' . b:curr_file_name_no_ext . '" | grep "' . g:vim_markdown_preview_browser . '" | cut -d " " -f1')
         if !chrome_wid
             if g:vim_markdown_preview_use_xdg_open == 1
                 call system('xdg-open /tmp/' . b:curr_file_name_no_ext . '.html 1>/dev/null 2>/dev/null &')
@@ -149,7 +149,7 @@ function! Vim_Markdown_Preview_Local()
     endif
 
     if g:vmp_osname == 'unix'
-        let chrome_wid = system('wmctrl -l | grep -e "' . b:curr_file_name_no_ext . '" -e "' . g:vim_markdown_preview_browser . '" | cut -d " " -f1')
+        let chrome_wid = system('wmctrl -l | grep "' . b:curr_file_name_no_ext . '" | grep "' . g:vim_markdown_preview_browser . '" | cut -d " " -f1')
         if !chrome_wid
             if g:vim_markdown_preview_use_xdg_open == 1
                 call system('xdg-open ' . b:curr_file_path_no_ext . '.html 1>/dev/null 2>/dev/null &')
