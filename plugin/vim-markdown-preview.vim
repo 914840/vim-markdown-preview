@@ -62,7 +62,7 @@ if !exists("g:vim_markdown_preview_hotkey")
     let g:vim_markdown_preview_hotkey = '<C-p>'
 endif
 
-if !exists("vim_markdown_preivew_grip_credential")
+if !exists("g:vim_markdown_preview_grip_credential")
     let g:vim_markdown_preview_grip_credential = ''
 endif
 
