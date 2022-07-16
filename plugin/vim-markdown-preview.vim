@@ -156,7 +156,7 @@ function! Vim_Markdown_Preview_Local()
         let chrome_wid = system('wmctrl -l | grep "' . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '" | grep "' . g:vim_markdown_preview_browser . '" | cut -d " " -f1')
         if !chrome_wid
             if g:vim_markdown_preview_use_xdg_open == 1
-                call system('xdg-open ' . b:curr_file_dir . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '.html 1>/dev/null 2>/dev/null &')
+                call system('xdg-open "' . b:curr_file_dir . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '.html" 1>/dev/null 2>/dev/null &')
             else
                 call system('see vim-markdown-preview.html 1>/dev/null 2>/dev/null &')
             endif
