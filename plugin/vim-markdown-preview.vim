@@ -38,6 +38,10 @@ if !exists("g:vim_markdown_preview_toggle")
     let g:vim_markdown_preview_toggle = 0
 endif
 
+if !exists("g:vim_markdown_preview_html_prefix")
+    let g:vim_markdown_preview_html_prefix = ''
+endif
+
 if !exists("g:vim_markdown_preview_github")
     let g:vim_markdown_preview_github = 0
 endif
@@ -132,27 +136,27 @@ function! Vim_Markdown_Preview_Local()
     let b:curr_file_dir = expand('%:p:h') . '/'
 
     if g:vim_markdown_preview_grip == 1
-        call system('grip ' . g:vim_markdown_preview_grip_credential . ' "' . b:curr_file_path . '" --export ' . b:curr_file_path_no_ext . '.html --title ' . b:curr_file_name_no_ext . '.html')
+        call system('grip ' . g:vim_markdown_preview_grip_credential . ' "' . b:curr_file_path . '" --export "' . b:curr_file_dir . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '.html" --title "' . b:curr_file_name_no_ext . '.html"')
     elseif g:vim_markdown_preview_perl == 1
-        call system('Markdown.pl "' . b:curr_file_path . '" > ' . b:curr_file_path_no_ext . '.html')
+        call system('Markdown.pl "' . b:curr_file_path . '" > ' . b:curr_file_dir . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '.html')
     elseif g:vim_markdown_preview_pandoc == 1
         if g:vim_markdown_preview_github == 1
-            call system('pandoc --standalone -f gfm "' . b:curr_file_path . '" > ' . b:curr_file_path_no_ext . '.html')
+            call system('pandoc --standalone -f gfm "' . b:curr_file_path . '" > ' . b:curr_file_dir . g:vim_markdown_preview_html_prefix.  b:curr_file_name_no_ext . '.html')
         else
-            call system('pandoc --standalone "' . b:curr_file_path . '" > ' . b:curr_file_path_no_ext . '.html')
+            call system('pandoc --standalone "' . b:curr_file_path . '" > ' . b:curr_file_dir . b:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '.html')
         endif
     else
-        call system('markdown "' . b:curr_file_path . '" > ' . b:curr_file_path_no_ext . '.html')
+        call system('markdown "' . b:curr_file_path . '" > ' . b:curr_file_dir . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '.html')
     endif
     if v:shell_error
         echo 'Please install the necessary requirements: https://github.com/JamshedVesuna/vim-markdown-preview#requirements'
     endif
 
     if g:vmp_osname == 'unix'
-        let chrome_wid = system('wmctrl -l | grep "' . b:curr_file_name_no_ext . '" | grep "' . g:vim_markdown_preview_browser . '" | cut -d " " -f1')
+        let chrome_wid = system('wmctrl -l | grep "' . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '" | grep "' . g:vim_markdown_preview_browser . '" | cut -d " " -f1')
         if !chrome_wid
             if g:vim_markdown_preview_use_xdg_open == 1
-                call system('xdg-open ' . b:curr_file_path_no_ext . '.html 1>/dev/null 2>/dev/null &')
+                call system('xdg-open ' . b:curr_file_dir . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '.html 1>/dev/null 2>/dev/null &')
             else
                 call system('see vim-markdown-preview.html 1>/dev/null 2>/dev/null &')
             endif
@@ -179,7 +183,7 @@ function! Vim_Markdown_Preview_Local()
 
     if g:vim_markdown_preview_temp_file == 1
         sleep 200m
-        call system('rm "' . b:curr_file_path_no_ext . '".html')
+        call system('rm "' . b:curr_file_dir . g:vim_markdown_preview_html_prefix . b:curr_file_name_no_ext . '".html')
     endif
 endfunction
 
