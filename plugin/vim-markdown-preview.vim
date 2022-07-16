@@ -59,7 +59,11 @@ if !exists("g:vim_markdown_preview_use_xdg_open")
 endif
 
 if !exists("g:vim_markdown_preview_hotkey")
-    let g:vim_markdown_preview_hotkey='<C-p>'
+    let g:vim_markdown_preview_hotkey = '<C-p>'
+endif
+
+if !exists("vim_markdown_preivew_grip_credential")
+    let g:vim_markdown_preview_grip_credential = ''
 endif
 
 function! Vim_Markdown_Preview()
@@ -67,7 +71,7 @@ function! Vim_Markdown_Preview()
     let b:curr_file_name_no_ext = expand('%:t:r')
 
     if g:vim_markdown_preview_grip == 1
-        call system('grip "' . b:curr_file_path . '" --export /tmp/' . b:curr_file_name_no_ext . '.html --title ' . b:curr_file_name_no_ext . '.html')
+        call system('grip ' . g:vim_markdown_preview_grip_credential . ' "' . b:curr_file_path . '" --export /tmp/' . b:curr_file_name_no_ext . '.html --title ' . b:curr_file_name_no_ext . '.html')
     elseif g:vim_markdown_preview_perl == 1
         call system('Markdown.pl "' . b:curr_file_path . '" > /tmp/' . b:curr_file_name_no_ext . '.html')
     elseif g:vim_markdown_preview_pandoc == 1
@@ -128,7 +132,7 @@ function! Vim_Markdown_Preview_Local()
     let b:curr_file_dir = expand('%:p:h') . '/'
 
     if g:vim_markdown_preview_grip == 1
-        call system('grip "' . b:curr_file_path . '" --export ' . b:curr_file_path_no_ext . '.html --title ' . b:curr_file_name_no_ext . '.html')
+        call system('grip ' . g:vim_markdown_preview_grip_credential . ' "' . b:curr_file_path . '" --export ' . b:curr_file_path_no_ext . '.html --title ' . b:curr_file_name_no_ext . '.html')
     elseif g:vim_markdown_preview_perl == 1
         call system('Markdown.pl "' . b:curr_file_path . '" > ' . b:curr_file_path_no_ext . '.html')
     elseif g:vim_markdown_preview_pandoc == 1
@@ -181,12 +185,12 @@ endfunction
 
 if g:vim_markdown_preview_toggle == 0
     "Maps vim_markdown_preview_hotkey to Vim_Markdown_Preview()
-    :exec 'autocmd Filetype markdown,md noremap <buffer> ' . g:vim_markdown_preview_hotkey . ' :call Vim_Markdown_Preview()<CR>'
+    :exec 'autocmd Filetype markdown,md noremap <buffer> ' . g:vim_markdown_preview_hotkey . ' :w<CR>:call Vim_Markdown_Preview()<CR>'
     :exec 'autocmd Filetype markdown,md inoremap <buffer> ' . g:vim_markdown_preview_hotkey . ' <Esc>:w<CR>:call Vim_Markdown_Preview()<CR>'
 elseif g:vim_markdown_preview_toggle == 1
     "Display images - Maps vim_markdown_preview_hotkey to Vim_Markdown_Preview_Local() - saves the html file locally
     "and displays images in path
-    :exec 'autocmd Filetype markdown,md noremap <buffer> ' . g:vim_markdown_preview_hotkey . ' :call Vim_Markdown_Preview_Local()<CR>'
+    :exec 'autocmd Filetype markdown,md noremap <buffer> ' . g:vim_markdown_preview_hotkey . ' :w<CR>:call Vim_Markdown_Preview_Local()<CR>'
     :exec 'autocmd Filetype markdown,md inoremap <buffer> ' . g:vim_markdown_preview_hotkey . ' <Esc>:w<CR>:call Vim_Markdown_Preview_Local()<CR>'
 elseif g:vim_markdown_preview_toggle == 2
     "Display images - Automatically call Vim_Markdown_Preview_Local() on buffer write
